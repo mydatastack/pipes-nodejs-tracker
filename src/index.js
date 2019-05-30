@@ -1,4 +1,4 @@
-const https = require("http")
+const https = require("https")
 const {generateUUID} = require("./uuid.js")
 const pipe = fns => x => fns.reduce((v, f) => f(v), x)
 
@@ -7,9 +7,10 @@ const buildPayload = type => anonymousId => payload =>
 
 const buildHeader = config => payload => ({
   header: {
-    ...config, 
+    hostname: config.hostname,
+    port: config.port || 443,
     method: "POST",
-    path: "/",
+    path: "/dev",
     headers: { 
       "User-Agent": "Pipes App", 
       "Content-Type": "application/json", 
@@ -23,11 +24,8 @@ const buildHeader = config => payload => ({
 const sendRequest = ({header, payload}) => 
   new Promise((resolve, reject) =>  {
     const req = https.request(header, res => {
-      res.on("data", d =>
-        resolve(d))
-      res.on("error", e =>
-        reject(e))
-
+      res.on("data", d => resolve(d))
+      res.on("error", e => reject(e))
     })
     req.write(payload)
     req.end()

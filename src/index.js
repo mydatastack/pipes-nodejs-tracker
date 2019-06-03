@@ -10,7 +10,7 @@ const buildHeader = config => payload => ({
     hostname: config.hostname,
     port: config.port || 443,
     method: "POST",
-    path: "/dev",
+    path: config.path || "/dev",
     headers: { 
       "User-Agent": "Pipes App", 
       "Content-Type": "application/json", 

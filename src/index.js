@@ -2,8 +2,8 @@ const https = require("https")
 const {generateUUID} = require("./uuid.js")
 const pipe = fns => x => fns.reduce((v, f) => f(v), x)
 
-const buildPayload = type => anonymousId => payload =>
-  JSON.stringify({type, ...payload, anonymousId})
+const buildPayload = type => anonymous_id => sent_at => payload =>
+  JSON.stringify({type, ...payload, anonymous_id, sent_at})
 
 const buildHeader = config => payload => ({
   header: {
@@ -33,25 +33,25 @@ const sendRequest = ({header, payload}) =>
   )
    
 
-const Pipes = (config = {}, anonymousId = generateUUID()) => ({
+const Pipes = (config = {}, anonymous_id = generateUUID()) => ({
   init: config => Pipes(config),
   identity: async payload => await pipe ([
-    buildPayload ("identity") (anonymousId),
+    buildPayload ("identity") (anonymous_id) (new Date().toISOString()),
     buildHeader (config),
     sendRequest
   ]) (payload),
   page: async payload => await pipe ([
-    buildPayload ("page") (anonymousId),
+    buildPayload ("page") (anonymous_id) (new Date().toISOString()),
     buildHeader (config),
     sendRequest
   ]) (payload),
   action: async payload => await pipe ([
-    buildPayload ("action") (anonymousId),
+    buildPayload ("action") (anonymous_id) (new Date().toISOString()),
     buildHeader (config),
     sendRequest
   ]) (payload),
   transaction:  async payload => await pipe ([
-    buildPayload ("transaction") (anonymousId),
+    buildPayload ("transaction") (anonymous_id) (new Date().toISOString()),
     buildHeader (config),
     sendRequest
   ]) (payload),

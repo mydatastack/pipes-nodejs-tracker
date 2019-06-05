@@ -5,8 +5,9 @@ const Pipes = require("./index.js")
 const pipes = Pipes.init({hostname: "xttz3qzila4x.execute-api.eu-central-1.amazonaws.com"})
 
 pipes.identity({
-  userId: "12345", 
-  attributes: {
+  user_id: "12345",
+  platform: "nodejs shell",
+  properties: {
     name: "Dimitri Tarasowski",
     email: "ceo@amazon.com",
     subscription: "monthly",
@@ -15,24 +16,35 @@ pipes.identity({
 })
 
 pipes.page({
-  userId: "12345",
-  path: "/homepage",
-  title: "Welcome home",
-  description: "My homepage"
+  user_id: "12345",
+  platform: "nodejs shell",
+  name: "Homepage",
+  properties: {
+    title: "Homepage title",
+    url: "example.com",
+    path: "/home"
+  }
 })
 
-
 pipes.action({
-  userId: "12345",
-  event: "submit",
-  description: "Form submit",
-  conversion: true
+  user_id: "12345",
+  platform: "nodejs shell",
+  event: "Registration",
+  properties: {
+    category: "winter sale",
+    action: "form",
+    label: "just a label",
+    value: 10
+  }
 })
 
 pipes.transaction({
-  userId: "12345",
-  product: "Apple mini",
-  productId: "XSSS0394",
-  price: 125
+  user_id: "12345",
+  platform: "nodejs shell",
+  properties: {
+    order_id: "#12345",
+    total: 50
+  }
 })
-```
+
+``` 
